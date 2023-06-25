@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const connect = () => {
   mongoose
     .connect(process.env.MONGO_URL, {
-      dbName: "buckets",
+      dbName: "spa_mall",
     })
     .then(() => console.log("몽고 연결 완료"))
     .catch((err) => console.error(err));
