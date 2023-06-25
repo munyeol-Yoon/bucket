@@ -46,4 +46,21 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:goodsId/cart", async (req, res) => {
+  const { goodsId } = req.params;
+  const { quantity } = req.body;
+
+  const existsCarts = await Cart.find({ goodsId });
+
+  if (existsCarts.length) {
+    await Cart.updateOne(
+      { goodsId: goodsId },
+      { $set: { quantity: quantity } }
+    );
+    res.status(200).json({ success: true });
+  } else {
+    res.status(400).json({ message: "카트에 해당 상품이 없습니다." });
+  }
+});
+
 module.exports = router;
