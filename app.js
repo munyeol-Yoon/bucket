@@ -15,7 +15,7 @@ connect();
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use("/", routers);
+app.use("/api", routers);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
