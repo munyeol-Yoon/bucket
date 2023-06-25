@@ -63,4 +63,16 @@ router.put("/:goodsId/cart", async (req, res) => {
   }
 });
 
+router.delete("/:goodsId/cart", async (req, res) => {
+  const { goodsId } = req.params;
+
+  const existsCarts = await Cart.find({ goodsId });
+  if (existsCarts.length) {
+    await Cart.deleteOne({ goodsId });
+    res.json({ result: "success" });
+  } else {
+    res.status(400).json({ message: "카트에 해당 상품이 없습니다." });
+  }
+});
+
 module.exports = router;
