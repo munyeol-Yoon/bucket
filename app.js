@@ -13,7 +13,14 @@ const port = process.env.PORT;
 connect();
 
 app.use(morgan("dev"));
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static("assets"));
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 app.use("/api", routers);
 
