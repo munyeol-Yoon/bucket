@@ -1,7 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../schemas/user");
+const authMiddleware = require("../middlewares/auth-middleware");
 
+// 내 정보 조회
+router.get("/me", authMiddleware, async (req, res) => {
+  const { email, nickname } = res.locals.user;
+
+  res.status(200).json({
+    user: {
+      email,
+      nickname,
+    },
+  });
+});
+
+// 회원가입
 router.post("/", async (req, res) => {
   const { email, nickname, password, confirmPassword } = req.body;
   if (password !== confirmPassword) {
