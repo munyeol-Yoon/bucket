@@ -25,6 +25,22 @@ router.get("/", async (req, res) => {
   res.status(200).json({ goods: result });
 });
 
+// 상품 상세 조회
+router.get("/:goodsId", async (req, res) => {
+  const { goodsId } = req.params;
+  const goods = await Goods.findOne({ goodsId: goodsId }).sort("-date").exec();
+
+  const result = {
+    goodsId: goods.goodsId,
+    name: goods.name,
+    price: goods.price,
+    thumbnailUrl: goods.thumbnailUrl,
+    category: goods.category,
+  };
+
+  res.status(200).json({ goods: result });
+});
+
 // 장바구니 상품 추가
 router.post("/:goodsId/cart", async (req, res) => {
   const { goodsId } = req.params;
