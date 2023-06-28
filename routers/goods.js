@@ -5,6 +5,27 @@ const Cart = require("../schemas/cart");
 
 const router = express.Router();
 
+// 상품 목록 조회, ?category=전자기기
+router.get("/", async (req, res) => {
+  const { category } = req.query;
+  const goods = await Goods.find(category ? { category } : {})
+    .sort("-date")
+    .exec();
+
+  const result = goods.map((item) => {
+    return {
+      goodsId: item.goodsId,
+      name: item.name,
+      price: item.price,
+      thumbnailUrl: item.thumbnailUrl,
+      category: item.category,
+    };
+  });
+
+  res.status(200).json({ goods: result });
+});
+
+// 장바구니 상품 추가
 router.post("/:goodsId/cart", async (req, res) => {
   const { goodsId } = req.params;
   const { quantity } = req.body;
@@ -22,6 +43,7 @@ router.post("/:goodsId/cart", async (req, res) => {
   res.json({ result: "success" });
 });
 
+// goods 생성
 router.post("/", async (req, res) => {
   try {
     const { goodsId, name, thumbnailUrl, category, price } = req.body;
